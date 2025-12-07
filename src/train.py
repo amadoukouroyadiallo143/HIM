@@ -558,6 +558,14 @@ def train_model_advanced(model, train_dataloader, val_dataloader, tokenizer, dev
 
     model.to(device)
 
+    # Optimizatoin: Compile model for faster execution on GPU (PyTorch 2.0+)
+    if os.name != 'nt': # torch.compile is not fully supported on Windows yet, but fine for Colab (Linux)
+        print("Compiling model with torch.compile()...")
+        try:
+            model = torch.compile(model)
+        except Exception as e:
+            print(f"Warning: torch.compile failed: {e}")
+    
     # Create multi-speed optimizer
     optimizer, param_groups_info = create_multi_speed_optimizer(model, base_lr)
 

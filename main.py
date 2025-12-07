@@ -158,11 +158,11 @@ if __name__ == '__main__':
     # Training hyperparameters (optimized for small models)
     parser.add_argument('--learning_rate', type=float, default=1e-4, help='Base learning rate (reduced for Lion optimizer).')
     parser.add_argument('--num_epochs', type=int, default=30, help='Number of training epochs (small models need more).')
-    parser.add_argument('--batch_size', type=int, default=8, help='Batch size.')
+    parser.add_argument('--batch_size', type=int, default=16, help='Batch size (increased for GPU efficiency).')
     parser.add_argument('--grad_clip_value', type=float, default=1.0, help='Gradient clipping value.')
     parser.add_argument('--save_steps', type=int, default=1000, help='Save checkpoint every N steps.')
     parser.add_argument('--accumulation_steps', type=int, default=4, help='Gradient accumulation steps (effective batch=32).')
-    parser.add_argument('--fp16', action='store_true', help='Enable Mixed Precision (AMP) training.')
+    parser.add_argument('--fp16', action='store_true', default=True, help='Enable Mixed Precision (AMP) training.')
 
     # Advanced training options
     parser.add_argument('--label_smoothing', type=float, default=0.1, help='Label smoothing factor (0-1).')
@@ -180,6 +180,9 @@ if __name__ == '__main__':
     
     # Enable TF32 for faster training on Ampere GPUs
     torch.set_float32_matmul_precision('medium')
+    # Optimize cuDNN algorithm selection
+    if torch.cuda.is_available():
+        torch.backends.cudnn.benchmark = True
     
     if not torch.cuda.is_available():
         print("!"*80)

@@ -95,7 +95,8 @@ def get_dataloader(dataset_type, tokenizer, max_seq_len, max_answer_len, batch_s
         # We rely on the dataset being naturally varied or add a shuffle buffer if needed.
         # For simplicity, we just iterate.
         dataset = WikiTextDataset(tokenizer, max_seq_len, max_answer_len, split)
-        dataloader = DataLoader(dataset, batch_size=batch_size, collate_fn=custom_collate_fn)
+        # Optimized for GPU: pin_memory=True
+        dataloader = DataLoader(dataset, batch_size=batch_size, collate_fn=custom_collate_fn, pin_memory=True)
     else:
         raise ValueError(f"Unknown dataset_type: {dataset_type}. Only 'wikitext' is supported.")
 
