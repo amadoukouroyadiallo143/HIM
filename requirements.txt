@@ -1,0 +1,15 @@
+torch
+transformers
+numpy
+tqdm
+datasets
+scikit-learn
+evaluate
+rouge_score
+nltk
+absl-py
+tensorboard
+sacrebleu
+bert-score
+matplotlib
+seaborn

@@ -1,0 +1,14 @@
+{
+    "architectures": [
+        "RobertaForMaskedLM"
+    ],
+    "model_type": "roberta",
+    "vocab_size": 30000,
+    "bos_token_id": 0,
+    "eos_token_id": 2,
+    "pad_token_id": 1,
+    "mask_token_id": 4,
+    "unk_token_id": 3,
+    "max_position_embeddings": 514,
+    "type_vocab_size": 1
+}
