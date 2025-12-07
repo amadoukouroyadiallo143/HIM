@@ -156,7 +156,7 @@ if __name__ == '__main__':
     parser.add_argument('--reasoning_tokens', type=int, default=64, help='Number of reasoning buffer tokens.')
 
     # Training hyperparameters (optimized for small models)
-    parser.add_argument('--learning_rate', type=float, default=1e-3, help='Base learning rate (higher for small models).')
+    parser.add_argument('--learning_rate', type=float, default=1e-4, help='Base learning rate (reduced for Lion optimizer).')
     parser.add_argument('--num_epochs', type=int, default=30, help='Number of training epochs (small models need more).')
     parser.add_argument('--batch_size', type=int, default=8, help='Batch size.')
     parser.add_argument('--grad_clip_value', type=float, default=1.0, help='Gradient clipping value.')
@@ -177,4 +177,14 @@ if __name__ == '__main__':
     parser.add_argument('--skip_threshold', type=float, default=0.5, help='Loss threshold for skipping batches.')
 
     args = parser.parse_args()
+    
+    # Enable TF32 for faster training on Ampere GPUs
+    torch.set_float32_matmul_precision('medium')
+    
+    if not torch.cuda.is_available():
+        print("!"*80)
+        print("WARNING: GPU not detected! Training will be extremely slow.")
+        print("Please enable GPU in Google Colab: Runtime > Change runtime type > Hardware accelerator > GPU")
+        print("!"*80)
+
     main(args)

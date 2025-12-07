@@ -40,7 +40,8 @@ class WikiTextDataset(torch.utils.data.IterableDataset):
                 continue
             
             # Tokenize the whole text (Disable truncation to handle splitting manually)
-            tokens = self.tokenizer.encode(text, add_special_tokens=False, truncation=False)
+            # Suppress warning for long sequences as we handle chunking manually
+            tokens = self.tokenizer.encode(text, add_special_tokens=False, truncation=False, verbose=False)
             
             # If text is too short for a meaningful split, skip
             if len(tokens) < 10:
